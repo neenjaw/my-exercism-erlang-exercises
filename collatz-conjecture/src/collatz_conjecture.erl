@@ -2,7 +2,7 @@
 
 -export([steps/1]).
 
-steps(N) when is_integer(N) and N > 0 ->
+steps(N) when is_integer(N) andalso N > 0 ->
   steps(N, 0);
 steps(_) ->
   erlang:error(badarg).
