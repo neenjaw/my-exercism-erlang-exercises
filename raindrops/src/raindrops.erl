@@ -2,11 +2,7 @@
 
 -export([convert/1]).
 
--define(FACTORS, [
-  {7, "Plong"},
-  {5, "Plang"},
-  {3, "Pling"}
-]).
+-define(FACTORS, [ 7, 5, 3 ]).
 
 convert(Number) -> convert(Number, ?FACTORS, []).
 
@@ -17,9 +13,14 @@ convert(Number, [], []) -> integer_to_list(Number);
 convert(_Number, [], Acc) -> lists:append(Acc);
 
 % Check for factors
-convert(Number, [{Factor, Msg} | T], Acc) when (Number rem Factor) == 0 ->
+convert(Number, [Factor | T], Acc) when (Number rem Factor) == 0 ->
+  Msg = get_msg(Factor),
   convert(Number, T, [Msg | Acc]);
 
 % Head isn't a factor, discard it, check the next
 convert(Number, [_ | T], Acc) ->
   convert(Number, T, Acc).
+
+get_msg(7) -> "Plong";
+get_msg(5) -> "Plang";
+get_msg(3) -> "Pling".
