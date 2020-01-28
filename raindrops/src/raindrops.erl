@@ -21,6 +21,6 @@ convert(Number, [Factor | T], Acc) when (Number rem Factor) == 0 ->
 convert(Number, [_ | T], Acc) ->
   convert(Number, T, Acc).
 
-get_msg(7) -> "Plong";
-get_msg(5) -> "Plang";
-get_msg(3) -> "Pling".
+get_msg(F) ->
+  Msgs = #{3 => "Pling", 5 => "Plang", 7 => "Plong"},
+  maps:get(F, Msgs).
