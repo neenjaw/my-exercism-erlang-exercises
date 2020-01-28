@@ -2,24 +2,24 @@
 
 -export([convert/1]).
 
-convert(Number) -> do_convert(Number, [7, 5, 3], []).
+-define(FACTORS, [
+  {7, "Plong"},
+  {5, "Plang"},
+  {3, "Pling"}
+]).
+
+convert(Number) -> convert(Number, ?FACTORS, []).
 
 % Base case - no matching factors
-do_convert(Number, [], []) -> integer_to_list(Number);
+convert(Number, [], []) -> integer_to_list(Number);
 
 % Base case - all factors tested
-do_convert(_Number, [], Acc) -> lists:append(Acc);
+convert(_Number, [], Acc) -> lists:append(Acc);
 
 % Check for factors
-do_convert(Number, [7 | T], Acc) when (Number rem 7) == 0 ->
-  do_convert(Number, T, ["Plong" | Acc]);
-
-do_convert(Number, [5 | T], Acc) when (Number rem 5) == 0 ->
-  do_convert(Number, T, ["Plang" | Acc]);
-
-do_convert(Number, [3 | T], Acc) when (Number rem 3) == 0 ->
-  do_convert(Number, T, ["Pling" | Acc]);
+convert(Number, [{Factor, Msg} | T], Acc) when (Number rem Factor) == 0 ->
+  convert(Number, T, [Msg | Acc]);
 
 % Head isn't a factor, discard it, check the next
-do_convert(Number, [_ | T], Acc) ->
-  do_convert(Number, T, Acc).
+convert(Number, [_ | T], Acc) ->
+  convert(Number, T, Acc).
