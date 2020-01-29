@@ -2,25 +2,14 @@
 
 -export([convert/1]).
 
--define(FACTORS, [ 7, 5, 3 ]).
+-define(FACTORS, [{3, "Pling"}, {5, "Plang"}, {7, "Plong"}]).
 
-convert(Number) -> convert(Number, ?FACTORS, []).
+convert(Number) ->
+  Msgs = [M || {F, M} <- ?FACTORS, (Number rem F) == 0],
+  convert(Number, Msgs).
 
 % Base case - no matching factors
-convert(Number, [], []) -> integer_to_list(Number);
+convert(Number, []) -> integer_to_list(Number);
 
 % Base case - all factors tested
-convert(_Number, [], Acc) -> lists:append(Acc);
-
-% Check for factors
-convert(Number, [Factor | T], Acc) when (Number rem Factor) == 0 ->
-  Msg = get_msg(Factor),
-  convert(Number, T, [Msg | Acc]);
-
-% Head isn't a factor, discard it, check the next
-convert(Number, [_ | T], Acc) ->
-  convert(Number, T, Acc).
-
-get_msg(F) ->
-  Msgs = #{3 => "Pling", 5 => "Plang", 7 => "Plong"},
-  maps:get(F, Msgs).
+convert(_Number, Msgs) -> lists:append(Msgs).
